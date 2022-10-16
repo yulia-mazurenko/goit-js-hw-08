@@ -23,7 +23,7 @@ function onInputForm(e) {
 function onFormSubmit(e) {
     e.preventDefault();
 
-    savedData = JSON.parse(localStorage.getItem(USER_FORM_DATA));
+    const savedData = JSON.parse(localStorage.getItem(USER_FORM_DATA));
     console.log(savedData);
 
     localStorage.removeItem(USER_FORM_DATA);
