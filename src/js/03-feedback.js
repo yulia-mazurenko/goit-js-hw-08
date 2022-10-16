@@ -37,7 +37,7 @@ function filingForm() {
     if (savedReloadData) {
         const parseReloadData = JSON.parse(savedReloadData)
                  
-        for (key in parseReloadData) {                              
+        for (const key in parseReloadData) {                              
                 document.querySelector(`.js-form__item[name="${key}"]`).value = parseReloadData[key]
             }                            
         
