@@ -2,19 +2,23 @@ import throttle from "lodash.throttle";
 
 const refs = {
     form: document.querySelector('.feedback-form'),
-    formElements: document.querySelectorAll('.feedback-form input, .feedback-form textarea'),
-   
+    formElements: document.querySelectorAll('.js-form__item'),
 }
+//    console.log(refs.formElements[0].value)
 
-refs.form.addEventListener('input', throttle(onInputForm, 500));
+refs.form.addEventListener('input', throttle(onFormInput, 500));
 refs.form.addEventListener('submit', onFormSubmit);
 const USER_FORM_DATA = "feedback-form-state";
+const savedData = localStorage.getItem(USER_FORM_DATA);
 
 filingForm();
 
-const formData = {};
+let formData;
+if (savedData) {
+    formData = JSON.parse(savedData);
+} else formData = {};
 
-function onInputForm(e) {
+function onFormInput(e) {
     formData[e.target.name] = e.target.value;
    
     localStorage.setItem(USER_FORM_DATA, JSON.stringify(formData));
@@ -23,29 +27,29 @@ function onInputForm(e) {
 function onFormSubmit(e) {
     e.preventDefault();
 
-    const savedData = JSON.parse(localStorage.getItem(USER_FORM_DATA));
-    console.log(savedData);
-
-    localStorage.removeItem(USER_FORM_DATA);
+    for (const element of refs.formElements) {
+        if (!element.value) {
+            window.alert("Please enter data in all fields of the form");
+            return;
+}
+    }
+        
     e.target.reset();
+    
+    console.log(formData);
+
+    formData = {}
+    localStorage.removeItem(USER_FORM_DATA);
 
 }
 
 function filingForm() {
-    const savedReloadData = localStorage.getItem(USER_FORM_DATA);
-    
-    if (savedReloadData) {
-        const parseReloadData = JSON.parse(savedReloadData)
-                 
-        for (const key in parseReloadData) {                              
-                document.querySelector(`.js-form__item[name="${key}"]`).value = parseReloadData[key]
-            }                            
+       
+    if (savedData) {
+                        
+        for (const key in JSON.parse(savedData)) {
+                document.querySelector(`.js-form__item[name="${key}"]`).value = JSON.parse(savedData)[key]
+            }
         
     }
 }
-    
-        
-        
-        
-        
-            
